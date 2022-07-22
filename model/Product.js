@@ -11,10 +11,13 @@ const ProductSchema = new mongoose.Schema({
     categories: {
         type: String,
         enum:['BEVERAGE','CROCKERY','FOOD'],
-        default:'BEVERAGE'
+        
     },
     description: {
         type: String,
+    },
+    price:{
+        type:Number
     },
     image: {
         type: String,

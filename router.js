@@ -1,4 +1,11 @@
-const { userRegister, userLogin,createProduct,uploadProduct,getProducts,deleteProduct } = require('./controller/service');
+const { userRegister,
+     userLogin,createProduct,
+     uploadProduct,
+     getProducts,
+     deleteProduct,
+     editProductDetails
+     } = require('./controller/service');
+     
 const auth = require('./middleware/authentication');
 const upload =require('./middleware/multer');
 const router = require('express').Router();
@@ -9,7 +16,8 @@ router.post("/login", userLogin);
 //product
 router.post("/upload",auth,upload.single('image'),uploadProduct);
 router.post("/create",auth,createProduct);
-router.delete("/delete/:Id",auth,deleteProduct);
+router.put("/edit/:id",auth,editProductDetails);
+router.delete("/delete/:id",auth,deleteProduct);
 router.get("/getProducts",getProducts);
 
 module.exports = router;

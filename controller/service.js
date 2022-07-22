@@ -51,9 +51,9 @@ const uploadProduct = async (req, res) => {
 };
 
 const createProduct = async (req, res) => {
-    const { name, categories, description } = req.body;
+    const { name, categories, description,price } = req.body;
     const product = new Product({
-        u_id: req.user._id, name: name, categories: categories, description: description
+        u_id: req.user._id, name: name, categories: categories, description: description,price:price
     });
 
     try {
@@ -64,10 +64,31 @@ const createProduct = async (req, res) => {
     }
 };
 
-const deleteProduct = async (req, res) => {
+const editProductDetails = async (req, res) => {
     const { Id } = req.params;
+    const { description,price } = req.body;
 
-    const response = await Product.find({ _id: Id });
+    const filter = [];
+
+    if (description) {
+        filter.push({ description: description })
+    }if(price){
+        filter.push({price:price})
+    }
+
+    const response = await Product.findOne({ _id: Id });
+    if (response) {
+      const updatedResponse=  await Product.updateOne({ _id: Id }, filter[0]);
+        res.send(updatedResponse);
+    } else {
+        res.send('invalid id');
+    }
+
+};
+
+const deleteProduct = async (req, res) => {
+    const { id } = req.params;
+    const response = await Product.findOne({ _id: id });
 
     if (response) {
         await response.remove();
@@ -88,4 +109,12 @@ const getProducts = async (req, res) => {
     res.send(response);
 };
 
-module.exports = { userRegister, userLogin, createProduct, uploadProduct, getProducts, deleteProduct };
+module.exports = { 
+    userRegister,
+     userLogin,
+      createProduct,
+       uploadProduct,
+        getProducts,
+         deleteProduct,
+         editProductDetails
+         };
